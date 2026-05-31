@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>A.M.K WEB - شوف فلوسك رايحة فين</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js">
+    </script>
+    <style>
+        :root {
+            --bg: #f0f2f5;
+            --surface: rgba(255, 255, 255, 0.85);
+            --surface-solid: #ffffff;
+            --text: #0b1e33;
+            --text-secondary: #3a4a5c;
+            --border: rgba(0, 0, 0, 0.06);
+            --green: #10b981;
+            --green-light: #d1fae5;
+            --red: #ef4444;
+            --red-light: #fee2e2;
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.08);
+            --radius: 24px;
+            --radius-sm: 16px;
+            --transition: 0.25s ease;
+            --header-bg: rgba(255, 255, 255, 0.75);
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --input-bg: #f8fafc;
+            --badge-bg: #e2e8f0;
+            --calendar-today: #2563eb;
+            --watermark-opacity: 0.04;
+            --font-size-base: 1rem;
+        }
+
+        .dark-mode {
+            --bg: #0f172a;
+            --surface: rgba(30, 41, 59, 0.8);
+            --surface-solid: #1e293b;
+            --text: #e2e8f0;
+            --text-secondary: #a0aec0;
+            --border: rgba(255, 255, 255, 0.08);
+            --green: #34d399;
+            --green-light: #064e3b;
+            --red: #f87171;
+            --red-light: #7f1d1d;
+            --shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.5);
+            --header-bg: rgba(30, 41, 59, 0.75);
+            --card-bg: rgba(30, 41, 59, 0.8);
+            --input-bg: #334155;
+            --badge-bg: #334155;
+            --calendar-today: #60a5fa;
+            --watermark-opacity: 0.07;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            transition: background 0.3s, color 0.3s;
+            min-height: 100vh;
+            line-height: 1.7;
+            position: relative;
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .watermark-container {
+            position: fixed;
+            top: -10%;
+            left: -10%;
+            width: 130%;
+            height: 130%;
+            pointer-events: none;
+            z-index: 0;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 60px;
+            opacity: var(--watermark-opacity);
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--text);
+            transform: rotate(-20deg);
+            user-select: none;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+        .watermark-item {
+            display: inline-block;
+            padding: 20px;
+        }
+
+        .header {
+            background: var(--header-bg);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow);
+            border-radius: 0 0 28px 28px;
+            margin-bottom: 20px;
+        }
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo-icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, #2563eb, #10b981);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 17px;
+            color: #fff;
+            box-shadow: 0 8px 16px rgba(37, 99, 235, 0.3);
+        }
+        .logo-text {
+            font-weight: 800;
+            font-size: 1.3rem;
+            background: linear-gradient(135deg, #2563eb, #10b981);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .logo-text span {
+            font-weight: 900;
+            -webkit-text-fill-color: #10b981;
+        }
+        .header-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        .dark-toggle {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            color: var(--text);
+            backdrop-filter: blur(12px);
+        }
+
+        .btn {
+            padding: 11px 22px;
+            border-radius: 30px;
+            border: none;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            letter-spacing: 0.3px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+            min-height: 46px;
+            justify-content: center;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: #fff;
+            box-shadow: 0 10px 22px rgba(37, 99, 235, 0.3);
+        }
+        .btn-primary:active {
+            transform: scale(0.96);
+        }
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+        .btn-ghost {
+            background: rgba(0, 0, 0, 0.02);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 0.8rem;
+            border-radius: 25px;
+            min-height: 40px;
+        }
+        .btn-danger {
+            background: #ef4444;
+            color: #fff;
+        }
+        .btn-success {
+            background: #10b981;
+            color: #fff;
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 16px 30px;
+            position: relative;
+            z-index: 5;
+        }
+
+        .hero-section {
+            text-align: center;
+            padding: 40px 20px;
+            background: var(--surface);
+            backdrop-filter: blur(20px);
+            border-radius: 32px;
+            box-shadow: var(--shadow-lg);
+            margin-bottom: 28px;
+            border: 1px solid var(--border);
+        }
+        .hero-title {
+            font-size: 2.2rem;
+            font-weight: 900;
+            margin-bottom: 12px;
+            line-height: 1.3;
+        }
+        .hero-title .highlight {
+            background: linear-gradient(135deg, #10b981, #2563eb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero-desc {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            max-width: 500px;
+            margin: 0 auto 24px;
+        }
+        .stats-illustration {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        .stat-bubble {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border-radius: 24px;
+            padding: 18px 24px;
+            box-shadow: var(--shadow);
+            min-width: 100px;
+            text-align: center;
+            border: 1px solid var(--border);
+        }
+        .stat-bubble .val {
+            font-size: 1.6rem;
+            font-weight: 800;
+        }
+        .stat-bubble .lbl {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+        .val.green { color: #10b981; }
+        .val.red { color: #ef4444; }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+        .feature-card {
+            background: var(--surface);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            padding: 24px 16px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+
+        .dashboard-section {
+            display: block;
+        }
+        .landing-section {
+            display: block;
+        }
+        .landing-section.hidden {
+            display: none;
+        }
+        .stats-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+        .stat-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border-radius: 24px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+        .stat-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 5px;
+            height: 100%;
+            border-radius: 0 5px 5px 0;
+        }
+        .stat-card.card-balance::after { background: linear-gradient(180deg, #2563eb, #1d4ed8); }
+        .stat-card.card-income::after { background: #10b981; }
+        .stat-card.card-expense::after { background: #ef4444; }
+        .stat-card.card-savings::after { background: #f59e0b; }
+        .stat-card .card-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+            font-weight: 700;
+        }
+        .stat-card .card-value {
+            font-size: 1.6rem;
+            font-weight: 800;
+        }
+
+        .panel {
+            background: var(--surface);
+            backdrop-filter: blur(12px);
+            border-radius: 24px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            margin-bottom: 20px;
+        }
+        .panel h3 {
+            margin-bottom: 16px;
+            font-size: 1.1rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            align-items: flex-end;
+            margin-bottom: 14px;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            flex: 1;
+            min-width: 140px;
+        }
+        .form-group label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 11px 16px;
+            border-radius: 25px;
+            border: 1px solid var(--border);
+            background: var(--input-bg);
+            color: var(--text);
+            font-size: 0.9rem;
+            transition: var(--transition);
+            font-family: inherit;
+            width: 100%;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.02);
+        }
+        .form-group textarea {
+            border-radius: 20px;
+            resize: vertical;
+            min-height: 60px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        table th, table td {
+            padding: 12px 10px;
+            text-align: right;
+            border-bottom: 1px solid var(--border);
+        }
+        table th {
+            font-weight: 700;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            background: var(--badge-bg);
+        }
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+        .badge-income { background: var(--green-light); color: #065f46; }
+        .badge-expense { background: var(--red-light); color: #991b1b; }
+
+        .tabs-nav {
+            display: flex;
+            gap: 6px;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            margin-bottom: 20px;
+            background: var(--badge-bg);
+            border-radius: 35px;
+            padding: 6px;
+            backdrop-filter: blur(12px);
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+        .tabs-nav::-webkit-scrollbar { display: none; }
+        .tab-btn {
+            padding: 10px 18px;
+            border-radius: 30px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.8rem;
+            transition: var(--transition);
+            color: var(--text-secondary);
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .tab-btn.active {
+            background: var(--surface);
+            color: var(--text);
+            box-shadow: var(--shadow);
+        }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeSlide 0.3s ease; }
+
+        .budget-item { margin-bottom: 16px; }
+        .budget-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        .budget-bar {
+            height: 10px;
+            border-radius: 8px;
+            background: var(--badge-bg);
+            overflow: hidden;
+        }
+        .budget-fill {
+            height: 100%;
+            border-radius: 8px;
+            transition: width 0.6s;
+            background: linear-gradient(90deg, #10b981, #34d399);
+        }
+        .budget-fill.warning { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+        .budget-fill.danger { background: linear-gradient(90deg, #ef4444, #f87171); }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+            text-align: center;
+            font-size: 0.8rem;
+        }
+        .calendar-grid .day-header {
+            font-weight: 800;
+            padding: 8px 2px;
+            color: var(--text-secondary);
+        }
+        .calendar-grid .day-cell {
+            padding: 8px 2px;
+            border-radius: 12px;
+            cursor: pointer;
+            min-height: 52px;
+            position: relative;
+            border: 1px solid transparent;
+            background: var(--surface);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .day-cell.today {
+            border: 2px solid var(--calendar-today);
+            font-weight: 800;
+            background: rgba(37,99,235,0.08);
+        }
+        .dot {
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            margin: 1px;
+        }
+        .dot.income-dot { background: #10b981; }
+        .dot.expense-dot { background: #ef4444; }
+        .calendar-nav {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+            justify-content: center;
+        }
+
+        .goal-card {
+            background: var(--surface);
+            border-radius: 18px;
+            padding: 16px;
+            border: 1px solid var(--border);
+            margin-bottom: 14px;
+            box-shadow: var(--shadow);
+        }
+        .goal-progress {
+            height: 12px;
+            border-radius: 8px;
+            background: var(--badge-bg);
+            overflow: hidden;
+            margin-top: 10px;
+        }
+        .goal-fill {
+            height: 100%;
+            border-radius: 8px;
+            background: linear-gradient(90deg, #10b981, #2563eb);
+        }
+
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 300;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            pointer-events: none;
+            width: 90%;
+            max-width: 400px;
+        }
+        .toast {
+            background: #0f172a;
+            color: #fff;
+            padding: 14px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            animation: slideDown 0.4s ease, fadeOut 0.4s 3s forwards;
+            pointer-events: auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+        .toast.warning { background: #b91c1c; }
+        .toast.success { background: #047857; }
+        @keyframes slideDown { from { transform: translateY(-40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes fadeOut { to { opacity: 0; transform: translateY(-20px); } }
+        @keyframes fadeSlide { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media (max-width: 600px) {
+            .header { padding: 12px 14px; border-radius: 0 0 24px 24px; }
+            .logo-icon { width: 40px; height: 40px; font-size: 15px; }
+            .logo-text { font-size: 1.1rem; }
+            .btn { padding: 8px 16px; font-size: 0.8rem; min-height: 40px; }
+            .hero-title { font-size: 1.8rem; }
+            .hero-section { padding: 30px 16px; border-radius: 24px; }
+            .stat-bubble { padding: 14px 18px; }
+            .stat-bubble .val { font-size: 1.3rem; }
+            .stats-cards { grid-template-columns: 1fr 1fr; gap: 12px; }
+            .stat-card { padding: 16px; }
+            .stat-card .card-value { font-size: 1.4rem; }
+            .panel { padding: 16px; border-radius: 20px; }
+            .form-group { min-width: 100%; }
+            .form-row { gap: 10px; }
+            table { font-size: 0.75rem; }
+            table th, table td { padding: 10px 6px; }
+            .tabs-nav { gap: 4px; padding: 5px; }
+            .tab-btn { padding: 8px 14px; font-size: 0.75rem; }
+            .calendar-grid .day-cell { min-height: 42px; font-size: 0.7rem; padding: 6px 2px; }
+            .day-header { font-size: 0.7rem; }
+            .btn-sm { padding: 6px 12px; font-size: 0.7rem; }
+        }
+        @media (max-width: 380px) {
+            .stats-cards { grid-template-columns: 1fr; }
+            .hero-title { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="watermark-container" id="watermarkContainer"></div>
+    <div class="toast-container" id="toastContainer"></div>
+
+    <header class="header">
+        <div class="logo-area">
+            <div class="logo-icon">AMK</div>
+            <div class="logo-text">A.M.K <span>WEB</span></div>
+        </div>
+        <div class="header-actions">
+            <button class="dark-toggle" onclick="toggleDarkMode()" title="الوضع الليلي">🌙</button>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <section class="landing-section" id="landingSection">
+            <div class="hero-section">
+                <h1 class="hero-title">شوف بتصرف <span class="highlight">فلوسك فلوسك</span> يا عم 😄</h1>
+                <p class="hero-desc">يعني إنت بتصرف وبتدخل فلوس، بس رايحة فين بالظبط؟ هنا هتعرف كل حاجة عن جنيهاتك اللي بتطير.</p>
+                <div class="stats-illustration">
+                    <div class="stat-bubble"><div class="val green">+12,500</div><div class="lbl">جنيه دخلوا</div></div>
+                    <div class="stat-bubble"><div class="val red">-8,200</div><div class="lbl">جنيه طلعوا</div></div>
+                    <div class="stat-bubble"><div class="val">4,300</div><div class="lbl">جنيه متحبسين</div></div>
+                </div>
+                <button class="btn btn-primary" style="margin-top:20px;" onclick="startApp()">🎯 ادخل على حساباتك</button>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card"><span class="feature-icon">📝</span> تسجيل كل حاجة</div>
+                <div class="feature-card"><span class="feature-icon">📊</span> تقارير جامدة</div>
+                <div class="feature-card"><span class="feature-icon">📈</span> رسومات بالألوان</div>
+                <div class="feature-card"><span class="feature-icon">🏷️</span> تصنيف على مزاجك</div>
+                <div class="feature-card"><span class="feature-icon">⚠️</span> تنبيه لو زودتها</div>
+                <div class="feature-card"><span class="feature-icon">🎯</span> ميزانية بإيدك</div>
+            </div>
+        </section>
+
+        <section class="dashboard-section" id="dashboardSection" style="display:none;">
+            <div class="tabs-nav">
+                <button class="tab-btn active" data-tab="tab-dashboard">📋 الرئيسية</button>
+                <button class="tab-btn" data-tab="tab-operations">💳 العمليات</button>
+                <button class="tab-btn" data-tab="tab-reports">📊 التقارير</button>
+                <button class="tab-btn" data-tab="tab-budget">🎯 الميزانية</button>
+                <button class="tab-btn" data-tab="tab-calendar">📅 التقويم</button>
+                <button class="tab-btn" data-tab="tab-goals">🏆 الأهداف</button>
+            </div>
+
+            <div class="tab-content active" id="tab-dashboard">
+                <div class="stats-cards">
+                    <div class="stat-card card-balance"><div class="card-label">💰 اللي في جيبك</div><div class="card-value" id="totalBalance">0.00 ج.م</div></div>
+                    <div class="stat-card card-income"><div class="card-label">📈 اللي دخل</div><div class="card-value green" id="totalIncome">0.00 ج.م</div></div>
+                    <div class="stat-card card-expense"><div class="card-label">📉 اللي راح</div><div class="card-value red" id="totalExpense">0.00 ج.م</div></div>
+                    <div class="stat-card card-savings"><div class="card-label">💰 نسبة التحويشة</div><div class="card-value" id="savingsRate">0%</div></div>
+                </div>
+                <div class="panel"><h3>📋 آخر حركات</h3><div style="overflow-x:auto;"><table><thead><tr><th>التاريخ</th><th>نوعها</th><th>تصنيفها</th><th>المبلغ</th><th>ملحوظة</th></tr></thead><tbody id="recentTransactions"></tbody></table></div></div>
+            </div>
+
+            <div class="tab-content" id="tab-operations">
+                <div class="panel">
+                    <h3>➕ قسم العمليات</h3>
+                    <div class="form-row">
+                        <div class="form-group"><label>نوع العمليه </label><select id="opType"><option value="expense">مصروف</option><option value="income">دخل</option></select></div>
+                        <div class="form-group"><label>المبلغ (ج.م)</label><input type="number" id="opAmount" placeholder="0.00" step="0.01" min="0.01"></div>
+                        <div class="form-group"><label>التصنيف</label><input type="text" id="opCategoryInput" placeholder="اكتب تصنيفك بإيدك" list="categorySuggestions"><datalist id="categorySuggestions"></datalist></div>
+                        <div class="form-group"><label>التاريخ</label><input type="date" id="opDate"></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group"><label>ملحوظة</label><input type="text" id="opNote" placeholder="أي كلام زيادة..."></div>
+                    </div>
+                    <button class="btn btn-primary" onclick="addTransaction()">💾 سجلها</button>
+                </div>
+                <div class="panel">
+                    <h3>📜 سجل الحسابات</h3>
+                    <div class="form-row">
+                        <div class="form-group"><input type="text" id="searchTransactions" placeholder="🔍 دور على حاجة..." oninput="renderTransactionsTable()"></div>
+                        <div class="form-group"><select id="filterType" onchange="renderTransactionsTable()"><option value="all">الكل</option><option value="income">دخل</option><option value="expense">مصروف</option></select></div>
+                    </div>
+                    <div style="overflow-x:auto;"><table><thead><tr><th>التاريخ</th><th>نوعها</th><th>تصنيفها</th><th>المبلغ</th><th>ملحوظة</th><th>تعديل</th></tr></thead><tbody id="allTransactionsTable"></tbody></table></div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="tab-reports">
+                <div class="panel"><h3>📊 مصروفات الشهر</h3><div style="max-height:280px;"><canvas id="chartMonthlyExpense" height="140"></canvas></div></div>
+                <div class="panel"><h3>📈 الدخل الشهري</h3><div style="max-height:280px;"><canvas id="chartMonthlyIncome" height="140"></canvas></div></div>
+                <div class="panel"><h3>🍕 المصروفات على حسب تصنيفك</h3><div style="max-height:300px; max-width:350px; margin:0 auto;"><canvas id="chartCategoryPie" height="180"></canvas></div></div>
+                <div class="panel"><h3>⚖️ الدخل قدام المصروف</h3><div style="max-height:280px;"><canvas id="chartCompare" height="140"></canvas></div></div>
+                <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                    <button class="btn btn-outline btn-sm" onclick="exportExcel()">📥 Excel</button>
+                    <button class="btn btn-outline btn-sm" onclick="exportPDF()">📄 PDF</button>
+                </div>
+            </div>
+
+            <div class="tab-content" id="tab-budget">
+                <div class="panel">
+                    <h3>🎯 ميزانيتك الشهرية (إنت اللي بتتحكم)</h3>
+                    <div id="dynamicBudgets"></div>
+                    <button class="btn btn-primary btn-sm" onclick="addBudgetField()">➕ أضف بند جديد</button>
+                </div>
+                <div class="panel" id="budgetStatus">
+                    <h3>📊 إنت واقف فين</h3>
+                    <div id="budgetBars"></div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="tab-calendar">
+                <div class="panel">
+                    <div class="calendar-nav">
+                        <button class="btn btn-ghost btn-sm" onclick="changeCalendarMonth(-1)">◀ اللي فات</button>
+                        <strong id="calendarMonthLabel"></strong>
+                        <button class="btn btn-ghost btn-sm" onclick="changeCalendarMonth(1)">اللي جاي ▶</button>
+                    </div>
+                    <div class="calendar-grid" id="calendarGrid"></div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="tab-goals">
+                <div class="panel">
+                    <h3>🏆 حط هدفك</h3>
+                    <div class="form-row">
+                        <div class="form-group"><label>الهدف</label><input type="text" id="goalName" placeholder="عايز أجيب موبايل مثلاً"></div>
+                        <div class="form-group"><label>المبلغ كام؟</label><input type="number" id="goalTarget" placeholder="0.00" min="1"></div>
+                        <div class="form-group"><label>جمعت قد إيه؟</label><input type="number" id="goalSaved" placeholder="0.00" min="0"></div>
+                    </div>
+                    <button class="btn btn-primary btn-sm" onclick="addGoal()">➕ أضف</button>
+                </div>
+                <div id="goalsList"></div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        (function() {
+            const STORAGE_KEY = 'amk_web_data';
+            const SETTINGS_KEY = 'amk_web_settings';
+            const defaultData = {
+                transactions: [],
+                budgets: [{ name: 'أكل', amount: 2000 }, { name: 'خروجات', amount: 1000 }, { name: 'مواصلات', amount: 800 }],
+                goals: [],
+            };
+            function loadData() { try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || defaultData; } catch (e) { return defaultData; } }
+            function saveData() { localStorage.setItem(STORAGE_KEY, JSON.stringify(appData)); }
+            function loadSettings() { try { return JSON.parse(localStorage.getItem(SETTINGS_KEY)) || { darkMode: false }; } catch (e) { return { darkMode: false }; } }
+            function saveSettings() { localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings)); }
+
+            let appData = loadData();
+            let settings = loadSettings();
+            let currentCalendarMonth = new Date().getMonth();
+            let currentCalendarYear = new Date().getFullYear();
+            let activeTab = 'tab-dashboard';
+
+            const formatCurrency = (a) => parseFloat(a).toLocaleString('ar-EG', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' ج.م';
+
+            function showToast(msg, type = '') {
+                const container = document.getElementById('toastContainer');
+                const toast = document.createElement('div');
+                toast.className = 'toast ' + type;
+                toast.textContent = msg;
+                container.appendChild(toast);
+                setTimeout(() => toast.remove(), 3500);
+            }
+
+            function applyDarkMode() {
+                document.body.classList.toggle('dark-mode', settings.darkMode);
+                document.querySelector('.dark-toggle').textContent = settings.darkMode ? '☀️' : '🌙';
+            }
+            window.toggleDarkMode = function() { settings.darkMode = !settings.darkMode; saveSettings(); applyDarkMode(); };
+
+            function generateWatermark() {
+                const container = document.getElementById('watermarkContainer');
+                let html = '';
+                for (let i = 0; i < 40; i++) html += '<span class="watermark-item">A.M.K WEB</span>';
+                container.innerHTML = html;
+            }
+
+            window.startApp = function() {
+                document.getElementById('landingSection').classList.add('hidden');
+                document.getElementById('dashboardSection').style.display = 'block';
+                refreshAll();
+                showToast('👋 أهلاً بيك في فلوسك، اتفضل', 'success');
+            };
+
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('tab-btn')) {
+                    const tabId = e.target.getAttribute('data-tab');
+                    switchTab(tabId);
+                }
+            });
+
+            function switchTab(tabId) {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+                const btn = document.querySelector(`[data-tab="${tabId}"]`);
+                const content = document.getElementById(tabId);
+                if (btn) btn.classList.add('active');
+                if (content) content.classList.add('active');
+                activeTab = tabId;
+                refreshTabContent(tabId);
+            }
+
+            function refreshTabContent(tabId) {
+                if (tabId === 'tab-dashboard') refreshDashboard();
+                if (tabId === 'tab-operations') { updateCategorySuggestions(); renderTransactionsTable(); }
+                if (tabId === 'tab-reports') refreshCharts();
+                if (tabId === 'tab-budget') refreshBudgetDisplay();
+                if (tabId === 'tab-calendar') renderCalendar();
+                if (tabId === 'tab-goals') renderGoals();
+            }
+
+            function refreshAll() {
+                refreshDashboard();
+                updateCategorySuggestions();
+                renderTransactionsTable();
+                refreshBudgetDisplay();
+                if (activeTab === 'tab-reports') refreshCharts();
+                if (activeTab === 'tab-calendar') renderCalendar();
+                if (activeTab === 'tab-goals') renderGoals();
+            }
+
+            // ========== تحديث الاقتراحات لتشمل تصنيفات الميزانية ==========
+            function updateCategorySuggestions() {
+                const datalist = document.getElementById('categorySuggestions');
+                const type = document.getElementById('opType').value;
+                // التصنيفات الأساسية
+                const baseCats = type === 'income' 
+                    ? ['مرتب', 'شغل حر', 'استثمار', 'هدية', 'غيره']
+                    : ['أكل', 'مواصلات', 'فواتير', 'تعليم', 'خروجات', 'لبس', 'صحة', 'غيره'];
+                
+                // إضافة تصنيفات الميزانية الحالية (فريدة)
+                const budgetNames = appData.budgets.map(b => b.name).filter(name => name.trim() !== '');
+                const allCats = [...new Set([...baseCats, ...budgetNames])];
+                
+                datalist.innerHTML = allCats.map(c => `<option value="${c}">`).join('');
+            }
+
+            window.addTransaction = function() {
+                const type = document.getElementById('opType').value;
+                const amount = parseFloat(document.getElementById('opAmount').value);
+                const category = document.getElementById('opCategoryInput').value.trim() || 'غيره';
+                const date = document.getElementById('opDate').value;
+                const note = document.getElementById('opNote').value.trim();
+                if (isNaN(amount) || amount <= 0 || !date) { showToast('⚠️ حط مبلغ وتاريخ صح الله يكرمك مش ناقصه!', 'warning'); return; }
+                appData.transactions.unshift({ id: Date.now(), type, amount, category, date, note: note || '' });
+                saveData();
+                document.getElementById('opAmount').value = '';
+                document.getElementById('opCategoryInput').value = '';
+                document.getElementById('opNote').value = '';
+                document.getElementById('opDate').value = '';
+                refreshAll();
+                checkBudgetAlerts();
+                showToast('✅ تمام كده، اتسجلت', 'success');
+            };
+
+            window.deleteTransaction = function(id) {
+                if (!confirm('متأكد تمسحها؟')) return;
+                appData.transactions = appData.transactions.filter(t => t.id !== id);
+                saveData();
+                refreshAll();
+            };
+
+            window.editTransaction = function(id) {
+                const t = appData.transactions.find(tr => tr.id === id);
+                if (!t) return;
+                document.getElementById('opType').value = t.type;
+                document.getElementById('opAmount').value = t.amount;
+                document.getElementById('opCategoryInput').value = t.category;
+                document.getElementById('opDate').value = t.date;
+                document.getElementById('opNote').value = t.note || '';
+                updateCategorySuggestions();
+                appData.transactions = appData.transactions.filter(tr => tr.id !== id);
+                saveData();
+                switchTab('tab-operations');
+                showToast('✏️ عدل براحتك واضغط حفظ');
+                refreshAll();
+            };
+
+            function renderTransactionsTable() {
+                const search = (document.getElementById('searchTransactions')?.value || '').toLowerCase();
+                const filter = document.getElementById('filterType')?.value || 'all';
+                let filtered = appData.transactions;
+                if (filter !== 'all') filtered = filtered.filter(t => t.type === filter);
+                if (search) filtered = filtered.filter(t => t.category.toLowerCase().includes(search) || (t.note && t.note.includes(search)) || t.date.includes(search));
+                const tbody = document.getElementById('allTransactionsTable');
+                tbody.innerHTML = filtered.length ? filtered.map(t => `
+                    <tr>
+                        <td>${t.date}</td>
+                        <td><span class="badge ${t.type==='income'?'badge-income':'badge-expense'}">${t.type==='income'?'دخل':'مصروف'}</span></td>
+                        <td>${t.category}</td>
+                        <td style="font-weight:700;color:${t.type==='income'?'var(--green)':'var(--red)'}">${formatCurrency(t.amount)}</td>
+                        <td>${t.note||'-'}</td>
+                        <td>
+                            <button class="btn btn-ghost btn-sm" onclick="editTransaction(${t.id})">✏️</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteTransaction(${t.id})">🗑️</button>
+                        </td>
+                    </tr>`).join('') : '<tr><td colspan="6" style="text-align:center;padding:30px;">فاضي يا معلم</td></tr>';
+                const recentTbody = document.getElementById('recentTransactions');
+                const recent = appData.transactions.slice(0, 5);
+                recentTbody.innerHTML = recent.length ? recent.map(t => `
+                    <tr>
+                        <td>${t.date}</td>
+                        <td><span class="badge ${t.type==='income'?'badge-income':'badge-expense'}">${t.type==='income'?'دخل':'مصروف'}</span></td>
+                        <td>${t.category}</td>
+                        <td style="font-weight:700;color:${t.type==='income'?'var(--green)':'var(--red)'}">${formatCurrency(t.amount)}</td>
+                        <td>${t.note||'-'}</td>
+                    </tr>`).join('') : '<tr><td colspan="5" style="text-align:center;">لسه فاضي</td></tr>';
+            }
+
+            function refreshDashboard() {
+                const inc = appData.transactions.filter(t => t.type === 'income').reduce((s, t) => s + t.amount, 0);
+                const exp = appData.transactions.filter(t => t.type === 'expense').reduce((s, t) => s + t.amount, 0);
+                const bal = inc - exp;
+                document.getElementById('totalBalance').textContent = formatCurrency(bal);
+                document.getElementById('totalIncome').textContent = formatCurrency(inc);
+                document.getElementById('totalExpense').textContent = formatCurrency(exp);
+                document.getElementById('savingsRate').textContent = inc ? Math.round((bal / inc) * 100) + '%' : '0%';
+                renderTransactionsTable();
+            }
+
+            function renderBudgetFields() {
+                const container = document.getElementById('dynamicBudgets');
+                container.innerHTML = appData.budgets.map((b, idx) => `
+                    <div class="form-row" style="margin-bottom:8px;">
+                        <div class="form-group"><label>اسم البند</label><input type="text" value="${b.name}" onchange="window.updateBudgetName(${idx}, this.value)"></div>
+                        <div class="form-group"><label>المبلغ (ج.م)</label><input type="number" value="${b.amount}" min="0" onchange="window.updateBudgetAmount(${idx}, this.value)"></div>
+                        <button class="btn btn-danger btn-sm" onclick="window.deleteBudget(${idx})">🗑️</button>
+                    </div>`).join('');
+            }
+
+            window.addBudgetField = function() {
+                appData.budgets.push({ name: 'بند جديد', amount: 0 });
+                saveData();
+                renderBudgetFields();
+                refreshBudgetDisplay();
+                updateCategorySuggestions(); // تحديث الاقتراحات بعد إضافة بند
+            };
+            window.deleteBudget = function(idx) { 
+                appData.budgets.splice(idx, 1); 
+                saveData(); 
+                renderBudgetFields(); 
+                refreshBudgetDisplay();
+                updateCategorySuggestions(); // تحديث الاقتراحات بعد حذف بند
+            };
+            window.updateBudgetName = function(idx, value) { 
+                appData.budgets[idx].name = value; 
+                saveData(); 
+                refreshBudgetDisplay();
+                updateCategorySuggestions(); // تحديث الاقتراحات بعد تغيير الاسم
+            };
+            window.updateBudgetAmount = function(idx, value) { 
+                appData.budgets[idx].amount = parseFloat(value) || 0; 
+                saveData(); 
+                refreshBudgetDisplay();
+                updateCategorySuggestions(); // تحديث الاقتراحات بعد تغيير المبلغ
+            };
+
+            function getCurrentMonthExpensesByCategory() {
+                const now = new Date();
+                const monthStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+                const byCat = {};
+                appData.transactions.filter(t => t.type === 'expense' && t.date.startsWith(monthStr)).forEach(t => {
+                    byCat[t.category] = (byCat[t.category] || 0) + t.amount;
+                });
+                return byCat;
+            }
+
+            function refreshBudgetDisplay() {
+                renderBudgetFields();
+                const byCat = getCurrentMonthExpensesByCategory();
+                const barsContainer = document.getElementById('budgetBars');
+                barsContainer.innerHTML = appData.budgets.map(b => {
+                    const spent = byCat[b.name] || 0;
+                    const pct = b.amount > 0 ? Math.min((spent / b.amount) * 100, 100) : 0;
+                    const fillClass = pct >= 100 ? 'danger' : pct >= 75 ? 'warning' : '';
+                    return `<div class="budget-item"><div class="budget-header"><span>📌 ${b.name}</span><span>${formatCurrency(spent)} / ${formatCurrency(b.amount)}</span></div><div class="budget-bar"><div class="budget-fill ${fillClass}" style="width:${pct}%"></div></div></div>`;
+                }).join('') || '<p style="text-align:center;">ضيف بند من فوق</p>';
+            }
+
+            function checkBudgetAlerts() {
+                const byCat = getCurrentMonthExpensesByCategory();
+                appData.budgets.forEach(b => { if ((byCat[b.name] || 0) >= b.amount && b.amount > 0) showToast(`⚠️ البند "${b.name}" زاد عن الحد`, 'warning'); });
+            }
+
+            let charts = {};
+            function destroyChart(k) { if (charts[k]) { charts[k].destroy(); charts[k] = null; } }
+            function refreshCharts() { setTimeout(() => { renderBarChart('chartMonthlyExpense', 'expense', '#ef4444'); renderBarChart('chartMonthlyIncome', 'income', '#10b981'); renderPieChart(); renderLineChart(); }, 100); }
+
+            function getMonthlyData(type) {
+                const months = [];
+                const now = new Date();
+                for (let i = 5; i >= 0; i--) {
+                    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+                    months.push({ label: d.toLocaleDateString('ar-EG', { month: 'short' }), monthStr: `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}` });
+                }
+                return { labels: months.map(m => m.label), data: months.map(m => appData.transactions.filter(t => t.type === type && t.date.startsWith(m.monthStr)).reduce((s, t) => s + t.amount, 0)) };
+            }
+
+            function renderBarChart(canvasId, type, color) {
+                destroyChart(canvasId);
+                const ctx = document.getElementById(canvasId);
+                if (!ctx) return;
+                const { labels, data } = getMonthlyData(type);
+                charts[canvasId] = new Chart(ctx, { type: 'bar', data: { labels, datasets: [{ data, backgroundColor: color, borderRadius: 6 }] }, options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { display: false } } } });
+            }
+
+            function renderPieChart() {
+                destroyChart('chartCategoryPie');
+                const ctx = document.getElementById('chartCategoryPie');
+                if (!ctx) return;
+                const byCat = {};
+                appData.transactions.filter(t => t.type === 'expense').forEach(t => byCat[t.category] = (byCat[t.category] || 0) + t.amount);
+                const entries = Object.entries(byCat);
+                if (!entries.length) return;
+                charts['chartCategoryPie'] = new Chart(ctx, { type: 'doughnut', data: { labels: entries.map(e => e[0]), datasets: [{ data: entries.map(e => e[1]), backgroundColor: ['#ef4444','#f59e0b','#2563eb','#8b5cf6','#10b981','#ec4899','#06b6d4'] }] } });
+            }
+
+            function renderLineChart() {
+                destroyChart('chartCompare');
+                const ctx = document.getElementById('chartCompare');
+                if (!ctx) return;
+                const { labels, data: expData } = getMonthlyData('expense');
+                const { data: incData } = getMonthlyData('income');
+                charts['chartCompare'] = new Chart(ctx, { type: 'line', data: { labels, datasets: [{ label: 'مصروف', data: expData, borderColor: '#ef4444', backgroundColor: 'rgba(239,68,68,0.1)', fill: true }, { label: 'دخل', data: incData, borderColor: '#10b981', backgroundColor: 'rgba(16,185,129,0.1)', fill: true }] } });
+            }
+
+            window.changeCalendarMonth = function(d) {
+                currentCalendarMonth += d;
+                if (currentCalendarMonth > 11) { currentCalendarMonth = 0; currentCalendarYear++; }
+                if (currentCalendarMonth < 0) { currentCalendarMonth = 11; currentCalendarYear--; }
+                renderCalendar();
+            };
+
+            function renderCalendar() {
+                const grid = document.getElementById('calendarGrid');
+                const label = document.getElementById('calendarMonthLabel');
+                const names = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+                label.textContent = `${names[currentCalendarMonth]} ${currentCalendarYear}`;
+                const monthStr = `${currentCalendarYear}-${String(currentCalendarMonth+1).padStart(2,'0')}`;
+                const dayMap = {};
+                appData.transactions.filter(t => t.date.startsWith(monthStr)).forEach(t => {
+                    const d = parseInt(t.date.split('-')[2]);
+                    if (!dayMap[d]) dayMap[d] = { in: false, ex: false };
+                    t.type === 'income' ? dayMap[d].in = true : dayMap[d].ex = true;
+                });
+                const firstDay = new Date(currentCalendarYear, currentCalendarMonth, 1).getDay();
+                const days = new Date(currentCalendarYear, currentCalendarMonth + 1, 0).getDate();
+                const todayStr = new Date().toISOString().split('T')[0];
+                let html = ['أحد','إثنين','ثلاثاء','أربعاء','خميس','جمعة','سبت'].map(d => `<div class="day-header">${d}</div>`).join('');
+                for (let i = 0; i < firstDay; i++) html += '<div class="day-cell"></div>';
+                for (let d = 1; d <= days; d++) {
+                    const dateStr = `${currentCalendarYear}-${String(currentCalendarMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+                    const info = dayMap[d] || { in: false, ex: false };
+                    html += `<div class="day-cell${dateStr===todayStr?' today':''}"><strong>${d}</strong><br>${info.in?'<span class="dot income-dot"></span>':''}${info.ex?'<span class="dot expense-dot"></span>':''}</div>`;
+                }
+                grid.innerHTML = html;
+            }
+
+            window.addGoal = function() {
+                const name = document.getElementById('goalName').value.trim();
+                const target = parseFloat(document.getElementById('goalTarget').value);
+                const saved = parseFloat(document.getElementById('goalSaved').value) || 0;
+                if (!name || isNaN(target) || target <= 0) { showToast('⚠️ اكتب هدفك والمبلغ صح', 'warning'); return; }
+                appData.goals.push({ id: Date.now(), name, target, saved });
+                saveData();
+                document.getElementById('goalName').value = '';
+                document.getElementById('goalTarget').value = '';
+                document.getElementById('goalSaved').value = '';
+                renderGoals();
+                showToast('🏆 هدفك اتضاف بنجاح ', 'success');
+            };
+            window.deleteGoal = function(id) { appData.goals = appData.goals.filter(g => g.id !== id); saveData(); renderGoals(); };
+            window.updateGoal = function(id, val) { const goal = appData.goals.find(g => g.id === id); if (goal) { goal.saved = parseFloat(val) || 0; saveData(); renderGoals(); } };
+
+            function renderGoals() {
+                const container = document.getElementById('goalsList');
+                container.innerHTML = appData.goals.length ? appData.goals.map(g => {
+                    const pct = Math.min(Math.round((g.saved / g.target) * 100), 100);
+                    return `<div class="goal-card"><div style="display:flex;justify-content:space-between;"><strong>🎯 ${g.name}</strong><span>${formatCurrency(g.saved)} / ${formatCurrency(g.target)} (${pct}%)</span></div><div class="goal-progress"><div class="goal-fill" style="width:${pct}%"></div></div><div style="margin-top:10px;display:flex;gap:8px;"><input type="number" value="${g.saved}" onchange="window.updateGoal(${g.id}, this.value)" style="width:90px;padding:6px;border-radius:20px;border:1px solid var(--border);background:var(--input-bg);color:var(--text);"><button class="btn btn-danger btn-sm" onclick="window.deleteGoal(${g.id})">🗑️</button></div></div>`;
+                }).join('') : '<div class="panel" style="text-align:center;">معندكش أهداف لسه، حط أول هدف 🎯</div>';
+            }
+
+            window.exportExcel = function() {
+                let csv = 'التاريخ,النوع,التصنيف,المبلغ,ملحوظة\n';
+                appData.transactions.forEach(t => csv += `${t.date},${t.type==='income'?'دخل':'مصروف'},${t.category},${t.amount},${t.note||''}\n`);
+                const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv' });
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(blob);
+                a.download = 'AMK_Transactions.csv';
+                a.click();
+                showToast('📥 اتصدرت يا معلم', 'success');
+            };
+            window.exportPDF = function() { window.print(); };
+
+            function init() {
+                applyDarkMode();
+                generateWatermark();
+                updateCategorySuggestions();
+                document.getElementById('opDate').value = new Date().toISOString().split('T')[0];
+                renderBudgetFields();
+                refreshAll();
+            }
+            init();
+        })();
+    </script>
+</body>
+</html>
